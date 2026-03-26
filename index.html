@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cino // shadows</title>
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Arka Plan Videosu */
+        .video-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -2; opacity: 0.45;
+        }
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: -1;
+        }
+
+        /* Ana Kart */
+        .profile-card {
+            width: 380px;
+            text-align: center;
+            z-index: 10;
+            animation: containerFade 2s ease-out;
+            padding: 30px;
+        }
+
+        @keyframes containerFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Profil Fotoğrafı (Leopar) */
+        .avatar {
+            width: 110px; height: 110px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            border: 2px solid rgba(255,255,255,0.15);
+            background-image: url('leopar.jpg'); /* Klasördeki leopar.jpg'yi kullanır */
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        /* Glitch İsim */
+        .glitch {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -2px;
+            margin-bottom: 5px;
+            position: relative;
+            text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.025em -0.05em 0 rgba(0,255,0,0.75), 0.025em 0.05em 0 rgba(0,0,255,0.75);
+            animation: glitchEffect 1s infinite;
+        }
+        @keyframes glitchEffect { 
+            0% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.05em -0.025em 0 rgba(0,255,0,0.75), -0.025em 0.05em 0 rgba(0,0,255,0.75); }
+            100% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75); }
+        }
+
+        .bio-text { font-size: 0.8rem; color: #aaa; margin-bottom: 25px; letter-spacing: 1px; }
+
+        /* Discord Durum Kartı */
+        .discord-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        /* Alttaki küçük profil resmi ayarı */
+        .discord-card img { 
+            width: 42px; 
+            height: 42px; 
+            border-radius: 50%; 
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .discord-info { display: flex; flex-direction: column; gap: 2px; }
+        
+        .discord-name {
+            font-family: 'Space Mono', monospace;
+            font-style: italic;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .discord-status { font-size: 0.75rem; color: #888; }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+        }
+        .social-icons a { color: rgba(255,255,255,0.6); transition: 0.3s; }
+        .social-icons a:hover { color: #fff; transform: translateY(-3px); }
+
+        .footer-quote { font-size: 0.85rem; color: #ddd; margin-bottom: 30px; font-weight: 300; }
+
+        .guns-player {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .guns-player iframe { border-radius: 10px; filter: grayscale(1); }
+
+        #dust {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="dust"></canvas>
+
+<video autoplay loop muted playsinline class="video-bg">
+    <source src="https://static.vecteezy.com/system/resources/thumbnails/035/661/298/small_2k/rain-falling-over-the-neon-city-at-night-background-loop-video.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+
+<div class="profile-card">
+    <div class="avatar"></div>
+    <div class="glitch">cino</div>
+    <div class="bio-text">only you.</div>
+
+    <div class="discord-card">
+        <img src="leopar.jpg" alt="cino"> 
+        <div class="discord-info">
+            <div class="discord-name">cinonom</div>
+            <div class="discord-status">last seen 18 minutes ago</div>
+        </div>
+    </div>
+
+    <div class="social-icons">
+        <a href="https://www.instagram.com/cinarsaygilii" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-telegram-plane"></i></a>
+        <a href="#"><i class="fab fa-discord"></i></a>
+        <a href="#"><i class="fab fa-steam"></i></a>
+    </div>
+
+    <div class="footer-quote">Sessiz günler, ses getirecek yarınlar için.</div>
+
+    <div class="guns-player">
+        <iframe style="border-radius:12px" 
+            src="https://open.spotify.com/embed/track/407is9vYm87YfImsInI87S" 
+            width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+        </iframe>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('dust');
+    const ctx = canvas.getContext('2d');
+    let w, h, dots = [];
+    function init() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+        dots = [];
+        for(let i=0; i<60; i++) {
+            dots.push({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.5, v: Math.random()*0.4 + 0.1 });
+        }
+    }
+    function draw() {
+        ctx.clearRect(0,0,w,h);
+        ctx.fillStyle = "rgba(255,255,255,0.3)";
+        dots.forEach(d => {
+            ctx.beginPath();
+            ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
+            ctx.fill();
+            d.y += d.v;
+            if(d.y > h) d.y = -10;
+        });
+        requestAnimationFrame(draw);
+    }
+    window.onresize = init;
+    init();
+    draw();
+</script>
+
+</body>
+</html>
+
